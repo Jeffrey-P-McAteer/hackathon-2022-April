@@ -12,7 +12,7 @@ Plan:
 # Misc resources
 
  - https://arvr.google.com/cardboard/viewerprofilegenerator/
-
+ - http://www.sitesinvr.com/viewer/daydream2017/index.html
 
 
 
