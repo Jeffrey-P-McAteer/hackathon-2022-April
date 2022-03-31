@@ -8,12 +8,18 @@ Plan:
     - Serve a websocket comm ring the web app can use to keep state in sync across all connected devices (1 server == 1 "room")
     - Voice comm ring as well? May need to dip into WebRTC nonsense.
 
+# Misc research
+
+We will be using the [WebXR Device API](https://www.w3.org/TR/webxr/) to use native AR/VR capabilities for display and pointer/hand input.
+
+For iOS mobile devices this will require [Mozilla's WebXR Viewer app](https://apps.apple.com/us/app/webxr-viewer/id1295998056).
+
 
 # Misc resources
 
  - https://arvr.google.com/cardboard/viewerprofilegenerator/
  - http://www.sitesinvr.com/viewer/daydream2017/index.html
-
-
+ - https://apps.apple.com/us/app/webxr-viewer/id1295998056
+ - [Click on chrome](chrome://inducebrowsercrashforrealz)
 
 
