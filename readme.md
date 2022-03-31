@@ -20,6 +20,6 @@ For iOS mobile devices this will require [Mozilla's WebXR Viewer app](https://ap
  - https://arvr.google.com/cardboard/viewerprofilegenerator/
  - http://www.sitesinvr.com/viewer/daydream2017/index.html
  - https://apps.apple.com/us/app/webxr-viewer/id1295998056
- - [Click on chrome](chrome://inducebrowsercrashforrealz)
+ - [Click on chrome](chrome://inducebrowsercrashforrealz) : chrome://inducebrowsercrashforrealz
 
 
