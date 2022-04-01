@@ -21,4 +21,5 @@ For iOS mobile devices this will require [Mozilla's WebXR Viewer app](https://ap
  - http://www.sitesinvr.com/viewer/daydream2017/index.html
  - https://apps.apple.com/us/app/webxr-viewer/id1295998056
 
+ - https://gist.github.com/SevenW/47be2f9ab74cac26bf21
 
