@@ -56,8 +56,22 @@ def e(*file_path_parts):
 # 
 ########################################################
 def main(args=sys.argv):
-  pass
 
+  todos = [
+      {"id":"1","title":"Go to the garden"},
+      {"id":"2","title":"Go to the market"},
+      {"id":"3","title":"Prepare dinner"},
+  ]
+
+  import aiohttp.web
+
+  async def handle(request):
+    return aiohttp.web.json_response(todos)
+
+  server = aiohttp.web.Application()
+  server.add_routes([aiohttp.web.get('/', handle), aiohttp.web.get('/todos', handle)])
+
+  aiohttp.web.run_app(server)
 
 
 
