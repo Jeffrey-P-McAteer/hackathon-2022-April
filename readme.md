@@ -33,14 +33,6 @@ AR JS works on iphone / android:
 
 If you need to generate an SSL cert tied to a domain name (b/c Mozilla's AR browser for iOS does not respect OS cert stores ヽ(ಠ_ಠ)ノ), using [acme.sh](https://github.com/acmesh-official/acme.sh):
 
- - https://hacks.mozilla.org/2018/03/immersive-aframe-low-poly/
-
-Quickly reload peer machines:
-
-```js
-window.socket.send('location.reload();')
-````
-
 ```bash
 yay -S acme.sh
 
@@ -53,6 +45,19 @@ acme.sh --server zerossl --renew --dns -d publicip.jmcateer.pw -d localip.jmcate
 acme.sh --install-cert -d publicip.jmcateer.pw -d localip.jmcateer.pw --cert-file ssl/just_server.crt --key-file ssl/server.key --fullchain-file ssl/server.crt
 
 ```
+
+
+ - https://hacks.mozilla.org/2018/03/immersive-aframe-low-poly/
+
+Quickly reload peer machines:
+
+```js
+window.socket.send('location.reload();')
+````
+
+ - Skybox stolen from https://www.mineimatorforums.com/index.php?/topic/76836-make-your-own-16k-night-skyboxes-100-free-tutorial/ (thanks, it looks awesome!)
+
+
 
 # Dependencies
 
