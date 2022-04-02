@@ -7,6 +7,7 @@ import shutil
 import importlib
 import asyncio
 import ssl
+import traceback
 
 
 # Utility method to wrap imports with a call to pip to install first.
@@ -74,9 +75,10 @@ def get_ssl_cert_and_key_or_generate():
 
 # Actual event-driven subroutines, plus some global memory.
 
-objects = [
-  {'type': 'circle', 'location': [0.0, 0.0, 0.0]},
+world_objects = [
+  {'type': 'circle', 'location': [2.0, 2.0, 0.0]},
 ]
+all_websockets = []
 
 async def http_req_handler(req):
   peername = req.transport.get_extra_info('peername')
@@ -104,6 +106,9 @@ async def http_req_handler(req):
 
 
 async def ws_req_handler(req):
+  global world_objects
+  global all_websockets
+
   peername = req.transport.get_extra_info('peername')
   host = 'unk'
   if peername is not None:
@@ -114,18 +119,39 @@ async def ws_req_handler(req):
   ws = aiohttp.web.WebSocketResponse()
   await ws.prepare(req)
 
+  all_websockets.append(ws)
+
   async for msg in ws:
     if msg.type == aiohttp.WSMsgType.TEXT:
       print('WS From {}: {}'.format(host, msg.data))
-      if msg.data == 'close':
-        await ws.close()
-      else:
-        await ws.send_str(msg.data + '/answer')
+      
+      # Broadcast to everyone else
+      for w in all_websockets:
+        if w != ws:
+          await w.send_str(msg.data)
+      
     elif msg.type == aiohttp.WSMsgType.ERROR:
       print('ws connection closed with exception {}'.format(ws.exception()))
 
   return ws
 
+async def start_background_tasks(server):
+  loop = asyncio.get_event_loop()
+  task = loop.create_task(heartbeat_task())
+  #return heartbeat_task()
+
+async def heartbeat_task():
+  global world_objects
+  global all_websockets
+  while True:
+    try:
+      print('Pinging {} websockets'.format(len(all_websockets)))
+      for w in all_websockets:
+        await w.send_str('Ping!')
+    except:
+      traceback.print_exc()
+
+    await asyncio.sleep(1)
 
 ########################################################
 # 
@@ -148,6 +174,8 @@ def main(args=sys.argv):
     aiohttp.web.get('/', http_req_handler),
     aiohttp.web.get('/ws', ws_req_handler)
   ])
+
+  server.on_startup.append(start_background_tasks)
 
   ssl_ctx = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
   ssl_ctx.load_cert_chain(*get_ssl_cert_and_key_or_generate())
