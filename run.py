@@ -127,7 +127,7 @@ async def ws_req_handler(req):
     if msg.type == aiohttp.WSMsgType.TEXT:
       print('WS From {}: {}'.format(host, msg.data))
       
-      if msg.data.startswth('message='):
+      if msg.data.startswith('message='):
         continue
 
       # Broadcast to everyone else
