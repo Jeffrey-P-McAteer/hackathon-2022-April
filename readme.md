@@ -33,6 +33,9 @@ AR JS works on iphone / android:
 
 If you need to generate an SSL cert tied to a domain name (b/c Mozilla's AR browser for iOS does not respect OS cert stores ヽ(ಠ_ಠ)ノ), using [acme.sh](https://github.com/acmesh-official/acme.sh):
 
+ - https://hacks.mozilla.org/2018/03/immersive-aframe-low-poly/
+ 
+
 ```bash
 yay -S acme.sh
 

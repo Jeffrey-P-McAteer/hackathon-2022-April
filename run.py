@@ -9,6 +9,7 @@ import asyncio
 import ssl
 import traceback
 import json
+import random
 
 
 # Utility method to wrap imports with a call to pip to install first.
@@ -77,7 +78,7 @@ def get_ssl_cert_and_key_or_generate():
 # Actual event-driven subroutines, plus some global memory.
 
 world_objects = [
-  {'type': 'circle', 'location': [2.0, 2.0, 0.0]},
+  {'name': 'obj-01', 'type': 'circle', 'location': [0.0, 0.0, 0.25], 'radius': 0.10},
 ]
 all_websockets = []
 
@@ -126,6 +127,9 @@ async def ws_req_handler(req):
     if msg.type == aiohttp.WSMsgType.TEXT:
       print('WS From {}: {}'.format(host, msg.data))
       
+      if msg.data.startswth('message='):
+        continue
+
       # Broadcast to everyone else
       for w in all_websockets:
         if w != ws:
@@ -150,15 +154,28 @@ async def heartbeat_task():
       if len(all_websockets) > 0:
         print('Pinging {} websockets'.format(len(all_websockets)))
         world_objs_str = json.dumps(world_objects)
-        world_objs_plot_js = 'console.log({})'.format(world_objs_str)
+        world_objs_plot_js = 'draw_geometries({})'.format(world_objs_str)
         
+        ws_to_rm = []
         for w in all_websockets:
-          await w.send_str(world_objs_plot_js)
+          try:
+            await w.send_str(world_objs_plot_js)
+          except:
+            traceback.print_exc()
+            ws_to_rm.append(w)
+
+        for w in ws_to_rm:
+          all_websockets.remove(w)
+
+      # Also move object randomly
+      for obj in world_objects:
+        if obj.get('name', '') == 'obj-01':
+          obj['location'][0] = random.uniform(-0.25, 0.25)
 
     except:
       traceback.print_exc()
 
-    await asyncio.sleep(2)
+    await asyncio.sleep(3)
 
 ########################################################
 # 

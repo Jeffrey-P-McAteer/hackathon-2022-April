@@ -29,7 +29,9 @@ function setup_ws() {
     window.socket.onmessage = function (event) {
       console.log('Got ws message: ' + event.data);
       // try to execute as JS code? Sounds safe!
-      eval(event.data);
+      if (document.hasFocus()) {
+        eval(event.data);
+      }
     };
 
   }
@@ -39,6 +41,34 @@ setInterval(setup_ws, 6000);
 setup_ws();
 
 // GUI utils
+
+window.geometries = {};
+
+function draw_geometries(world_objects) {
+  for (var i=0; i<world_objects.length; i+=1) {
+    var o = world_objects[i];
+    var name = o['name'];
+    if (name in window.geometries) {
+      // Just update position & metadata
+      window.geometries[name].setAttribute('position', o['location'][0]+' '+o['location'][1]+' '+o['location'][2]);
+      window.geometries[name].setAttribute('radius', o['radius'] ?? '0.10');
+
+    }
+    else {
+      // Create it!
+      if (o['type'] === 'circle') {
+        window.geometries[name] = document.createElement('a-sphere');
+        window.geometries[name].setAttribute('position', o['location'][0]+' '+o['location'][1]+' '+o['location'][2]);
+        window.geometries[name].setAttribute('radius', o['radius'] ?? '0.10');
+        window.geometries[name].setAttribute('color', '#EF2D5E');
+        document.getElementById('ar-scene').appendChild(window.geometries[name]);
+      }
+      else {
+        console.log('un-create-able geometry: ', o['type']);
+      }
+    }
+  }
+}
 
 function checkSupportedState_immersive_ar() {
   return new Promise((resolve, reject) => {
