@@ -138,7 +138,6 @@ async def ws_req_handler(req):
 async def start_background_tasks(server):
   loop = asyncio.get_event_loop()
   task = loop.create_task(heartbeat_task())
-  #return heartbeat_task()
 
 async def heartbeat_task():
   global world_objects
@@ -151,7 +150,7 @@ async def heartbeat_task():
     except:
       traceback.print_exc()
 
-    await asyncio.sleep(1)
+    await asyncio.sleep(2)
 
 ########################################################
 # 
