@@ -3,6 +3,10 @@ window.ws_url = 'wss://'+location.hostname+':'+location.port+'/ws'
 window.socket = false;
 window.immersive_ar_supported = false;
 window.immersive_vr_supported = false;
+try {
+  window.is_ios = !!navigator.platform.match(/iPhone|iPod|iPad/);
+} catch (err) { console.log(err); }
+
 
 // Development cheating
 window.onerror = function(message, source, lineno, colno, error) {
@@ -71,7 +75,14 @@ function render_immersive_ar() {
   document.getElementById('experience_target').innerText = 'Loading Immersive AR!'; 
 }
 function render_basic() {
+  if (window.is_ios) {
+    var msg_html = "Note: iOS safari currently does not ship with WebXR support, but Mozilla's WebXR Viewer does support WebXR. Please install Mozilla's WebXR Viewer to use this properly.<br><a href=\"https://apps.apple.com/us/app/webxr-viewer/id1295998056\">https://apps.apple.com/us/app/webxr-viewer/id1295998056</a>";
+    document.getElementById('experience_target').innerHTML = msg_html;
+    return;
+  }
+
   document.getElementById('experience_target').innerText = 'Loading Basic!'; 
+
 }
 
 // GUI drivers
