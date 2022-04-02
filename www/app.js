@@ -71,9 +71,11 @@ function checkSupportedState_immersive_vr() {
 function render_immersive_vr() {
   document.getElementById('experience_target').innerText = 'Loading Immersive VR!';
 }
+
 function render_immersive_ar() {
   document.getElementById('experience_target').innerText = 'Loading Immersive AR!'; 
 }
+
 function render_basic() {
   if (window.is_ios) {
     var msg_html = "Note: iOS safari currently does not ship with WebXR support, but Mozilla's WebXR Viewer does support WebXR. Please install Mozilla's WebXR Viewer to use this properly.<br><a href=\"https://apps.apple.com/us/app/webxr-viewer/id1295998056\">https://apps.apple.com/us/app/webxr-viewer/id1295998056</a>";
