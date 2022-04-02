@@ -21,5 +21,5 @@ function setup_ws() {
   }
 }
 
-setInterval(setup_ws,5000);
+setInterval(setup_ws,6000);
 setup_ws();
