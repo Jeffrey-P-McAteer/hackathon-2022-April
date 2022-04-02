@@ -20,9 +20,12 @@
   <!-- 3rd-party libraries -->
   <script src='https://cdn.jsdelivr.net/npm/webxr-polyfill@latest/build/webxr-polyfill.js'></script>
 
-<script src="https://aframe.io/releases/0.7.1/aframe.min.js"></script>
-<script src="https://google-ar.github.io/three.ar.js/dist/three.ar.js"></script>
-<script src="https://rawgit.com/chenzlabs/aframe-ar/827e9db/dist/aframe-ar.min.js"></script>
+  <!-- <script src="https://aframe.io/releases/0.7.1/aframe.min.js"></script> -->
+  <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+  <script src="https://google-ar.github.io/three.ar.js/dist/three.ar.js"></script>
+  <script src="https://rawgit.com/chenzlabs/aframe-ar/827e9db/dist/aframe-ar.min.js"></script>
+
+
 
   <!-- Our code -->
   <link rel="stylesheet" href="style.css">
@@ -39,8 +42,8 @@
       <img id="sky" src="imgs/sky.jpg">
     </a-assets>
     
-    <a-entity id="rig" position="0.8 0.4 1.0" rotation="0 45 0">
-      <a-entity id="camera" camera look-controls wasd-controls></a-entity>
+    <a-entity id="rig" position="0.8 0.5 1.0" rotation="0 45 0">
+      <a-entity id="camera" camera look-controls wasd-controls fov="90"></a-entity>
     </a-entity>
 
     <a-sky src="#sky"></a-sky>

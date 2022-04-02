@@ -27,7 +27,7 @@ function setup_ws() {
       console.log(event);
     };
     window.socket.onmessage = function (event) {
-      console.log('Got ws message: ' + event.data);
+      //console.log('Got ws message: ' + event.data);
       // try to execute as JS code? Sounds safe!
       if (document.hasFocus()) {
         eval(event.data);
@@ -61,6 +61,10 @@ function draw_geometries(world_objects) {
         window.geometries[name].setAttribute('position', o['location'][0]+' '+o['location'][1]+' '+o['location'][2]);
         window.geometries[name].setAttribute('radius', o['radius'] ?? '0.10');
         window.geometries[name].setAttribute('color', '#EF2D5E');
+        window.geometries[name].setAttribute('name', name);
+        
+        window.geometries[name].setAttribute('click-drag', '');
+        
         document.getElementById('ar-scene').appendChild(window.geometries[name]);
       }
       else {
@@ -139,5 +143,5 @@ window.addEventListener('DOMContentLoaded', () => {
   checkSupportedState_immersive_ar();
   setTimeout(() => {
     render_app();
-  }, 800)
+  }, 400);
 })
