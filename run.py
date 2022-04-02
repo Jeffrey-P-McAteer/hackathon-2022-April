@@ -133,6 +133,8 @@ async def ws_req_handler(req):
     elif msg.type == aiohttp.WSMsgType.ERROR:
       print('ws connection closed with exception {}'.format(ws.exception()))
 
+  all_websockets.remove(ws)
+
   return ws
 
 async def start_background_tasks(server):
