@@ -57,6 +57,7 @@ window.socket.send('location.reload();')
 
  - Skybox stolen from https://www.mineimatorforums.com/index.php?/topic/76836-make-your-own-16k-night-skyboxes-100-free-tutorial/ (thanks, it looks awesome!)
 
+ - https://jesstelford.github.io/aframe-click-drag-component/
 
 
 # Dependencies
