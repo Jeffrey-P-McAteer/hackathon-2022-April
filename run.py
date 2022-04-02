@@ -180,7 +180,7 @@ async def heartbeat_task():
       traceback.print_exc()
 
     # Wait 1 second plus 1/5 second per device (room size of 5 clients means 2 second delays)
-    await asyncio.sleep(1.0 + (0.2 * len(all_websockets)))
+    await asyncio.sleep(3.0 + (0.2 * len(all_websockets)))
 
 ########################################################
 # 

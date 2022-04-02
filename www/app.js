@@ -44,6 +44,28 @@ setup_ws();
 
 window.geometries = {};
 
+function bounce_geometry(name) {
+  if (name in window.geometries) {
+    var position_slices = (''+window.geometries[name].getAttribute('position')).split(' ');
+    var x0 = parseFloat(position_slices[0]);
+    var y0 = parseFloat(position_slices[1]);
+    var z0 = parseFloat(position_slices[2]);
+
+    var x1 = x0;
+    var y1 = y0;
+    var z1 = z0 + 0.8;
+
+    window.geometries[name].setAttribute('animation', 'property: position; from: '+x0+' '+y0+' '+z0+'; to: '+x1+' '+y1+' '+z1+'; dur: 600; loop: false;');
+
+    console.log('we did bounce_geometry("'+name+'")');
+
+    setTimeout(function(){
+      window.geometries[name].removeAttribute('animation');
+    }, 800);
+
+  }
+}
+
 function draw_geometries(world_objects) {
   for (var i=0; i<world_objects.length; i+=1) {
     var o = world_objects[i];
@@ -62,9 +84,13 @@ function draw_geometries(world_objects) {
         window.geometries[name].setAttribute('radius', o['radius'] ?? '0.10');
         window.geometries[name].setAttribute('color', '#EF2D5E');
         window.geometries[name].setAttribute('name', name);
-        
-        window.geometries[name].setAttribute('click-drag', '');
-        
+        window.geometries[name].classList.add('raytarget');
+
+        window.geometries[name].addEventListener('click', function (evt) {
+          bounce_geometry(name);
+          window.socket.send("bounce_geometry(\""+name+"\");");
+        });
+
         document.getElementById('ar-scene').appendChild(window.geometries[name]);
       }
       else {
