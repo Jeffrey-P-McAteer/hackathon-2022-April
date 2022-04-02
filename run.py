@@ -81,7 +81,7 @@ def get_ssl_cert_and_key_or_generate():
 # Actual event-driven subroutines, plus some global memory.
 
 world_objects = [
-  {'name': 'obj-01', 'type': 'circle', 'location': [0.0, 0.0, 0.25], 'radius': 0.10},
+  {'name': 'obj-01', 'type': 'circle', 'location': [0.0, 0.2, 0.25], 'radius': 0.10},
 ]
 all_websockets = []
 
