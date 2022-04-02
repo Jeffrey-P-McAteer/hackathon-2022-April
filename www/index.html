@@ -38,18 +38,20 @@
     <a-assets>
       <img id="sky" src="imgs/sky.jpg">
     </a-assets>
+    
     <a-entity id="rig" position="0.8 0.4 1.0" rotation="0 45 0">
       <a-entity id="camera" camera look-controls wasd-controls></a-entity>
     </a-entity>
 
-    <!-- <a-sky color="#EEEEEE"></a-sky> -->
     <a-sky src="#sky"></a-sky>
+
+    <a-entity position="0 3.6 -0.5" rotation="90 45 0" text="value: Skybox credit from\nYoGames Studios!; color: #a0a0a0; side: front;" scale="4 4 4"></a-entity>
 
     <a-plane position="-0.5 0 0" rotation="-90 0 0" width="2" height="2" color="#121212" shadow></a-plane>
 
-    <a-entity position="1.01 0 0" rotation="0 0 0" text="value: 1-0-0; color: #fe0e0e"></a-entity>
-    <a-entity position="0 1.01 0" rotation="0 0 0" text="value: 0-1-0; color: #0efe0e"></a-entity>
-    <a-entity position="0 0 1.01" rotation="0 0 0" text="value: 0-0-1; color: #0e0efe"></a-entity>
+    <a-entity position="1.01 0 0" rotation="0 0 0" text="value: 1-0-0; color: #fe0e0e; side: double;"></a-entity>
+    <a-entity position="0 1.01 0" rotation="0 0 0" text="value: 0-1-0; color: #0efe0e; side: double;"></a-entity>
+    <a-entity position="0 0 1.01" rotation="0 0 0" text="value: 0-0-1; color: #0e0efe; side: double;"></a-entity>
 
   </a-scene>
 
