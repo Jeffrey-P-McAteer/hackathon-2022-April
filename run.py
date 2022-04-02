@@ -3,8 +3,11 @@
 import os
 import sys
 import subprocess
+import shutil
 import importlib
 import asyncio
+import ssl
+
 
 # Utility method to wrap imports with a call to pip to install first.
 # > "100% idiot-proof!" -- guy on street selling rusty dependency chains.
@@ -48,7 +51,31 @@ def j(*file_path_parts):
   return os.path.join(*[x for x in file_path_parts if x is not None])
 
 def e(*file_path_parts):
-  return os.path.exists(j(file_path_parts))
+  return os.path.exists(j(*file_path_parts))
+
+def get_ssl_cert_and_key_or_generate():
+  ssl_dir = 'ssl'
+  if not e(ssl_dir):
+    os.makedirs(ssl_dir)
+  
+  key_file = j(ssl_dir, 'server.key')
+  cert_file = j(ssl_dir, 'server.crt')
+
+  if e(key_file) and e(cert_file):
+    return cert_file, key_file
+  else:
+    if e(key_file):
+      os.remove(key_file)
+    if e(cert_file):
+      os.remove(cert_file)
+  
+  if not shutil.which('openssl'):
+    raise Exception('Cannot find the tool "openssl", please install this so we can generate ssl certificates for our servers! Alternatively, manually create the files {} and {}.'.format(cert_file, key_file))
+
+  generate_cmd = ['openssl', 'req', '-x509', '-sha256', '-nodes', '-days', '28', '-newkey', 'rsa:2048', '-keyout', key_file, '-out', cert_file]
+  subprocess.run(generate_cmd, check=True)
+
+  return cert_file, key_file
 
 ########################################################
 # 
@@ -68,10 +95,34 @@ def main(args=sys.argv):
   async def handle(request):
     return aiohttp.web.json_response(todos)
 
-  server = aiohttp.web.Application()
-  server.add_routes([aiohttp.web.get('/', handle), aiohttp.web.get('/todos', handle)])
+  async def websocket_handler(request):
 
-  aiohttp.web.run_app(server)
+    ws = aiohttp.web.WebSocketResponse()
+    await ws.prepare(request)
+
+    async for msg in ws:
+        if msg.type == aiohttp.WSMsgType.TEXT:
+            if msg.data == 'close':
+                await ws.close()
+            else:
+                await ws.send_str(msg.data + '/answer')
+        elif msg.type == aiohttp.WSMsgType.ERROR:
+            print('ws connection closed with exception %s' %
+                  ws.exception())
+
+    print('websocket connection closed')
+
+    return ws
+
+
+  server = aiohttp.web.Application()
+  server.add_routes([aiohttp.web.get('/', handle), aiohttp.web.get('/todos', handle), aiohttp.web.get('/ws', websocket_handler)])
+
+  ssl_ctx = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
+  ssl_ctx.load_cert_chain(*get_ssl_cert_and_key_or_generate())
+
+
+  aiohttp.web.run_app(server, ssl_context=ssl_ctx, port=4430)
 
 
 
