@@ -46,18 +46,25 @@ window.geometries = {};
 
 function bounce_geometry(name) {
   if (name in window.geometries) {
-    var position_slices = (''+window.geometries[name].getAttribute('position')).split(' ');
-    var x0 = parseFloat(position_slices[0]);
-    var y0 = parseFloat(position_slices[1]);
-    var z0 = parseFloat(position_slices[2]);
+    //var position_slices = (''+window.geometries[name].getAttribute('position')).split(' ');
+    //console.log('position=', window.geometries[name].getAttribute('position'));
+    // var x0 = parseFloat(position_slices[0]);
+    // var y0 = parseFloat(position_slices[1]);
+    // var z0 = parseFloat(position_slices[2]);
+
+    var p = window.geometries[name].getAttribute('position');
+
+    var x0 = p.x;
+    var y0 = p.y;
+    var z0 = p.z;
 
     var x1 = x0;
-    var y1 = y0;
-    var z1 = z0 + 0.8;
+    var y1 = y0 + 0.3;
+    var z1 = z0;
 
-    window.geometries[name].setAttribute('animation', 'property: position; from: '+x0+' '+y0+' '+z0+'; to: '+x1+' '+y1+' '+z1+'; dur: 600; loop: false;');
+    window.geometries[name].setAttribute('animation', 'property: position; from: '+x0+' '+y0+' '+z0+'; to: '+x1+' '+y1+' '+z1+'; easing: easeInOutSine; dur: 450; dir: alternate; loop: 1;');
 
-    console.log('we did bounce_geometry("'+name+'")');
+    console.log('we did bounce_geometry("'+name+'") x0='+x0+' y0='+y0+' z0='+z0+'x1='+x1+' y1='+y1+' z1='+z1);
 
     setTimeout(function(){
       window.geometries[name].removeAttribute('animation');
