@@ -162,6 +162,8 @@ async def heartbeat_task():
 ########################################################
 def main(args=sys.argv):
 
+  cert_file, key_file = get_ssl_cert_and_key_or_generate()
+
   server = aiohttp.web.Application()
 
   www_file_routes = []
@@ -174,13 +176,15 @@ def main(args=sys.argv):
 
   server.add_routes(www_file_routes + [
     aiohttp.web.get('/', http_req_handler),
-    aiohttp.web.get('/ws', ws_req_handler)
+    aiohttp.web.get('/ws', ws_req_handler),
+    # Useful on ios to install our temporary ssl cert system-wide
+    aiohttp.web.get('/server.crt', lambda req: aiohttp.web.FileResponse(cert_file) ),
   ])
 
   server.on_startup.append(start_background_tasks)
 
   ssl_ctx = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
-  ssl_ctx.load_cert_chain(*get_ssl_cert_and_key_or_generate())
+  ssl_ctx.load_cert_chain(cert_file, key_file)
 
   aiohttp.web.run_app(server, ssl_context=ssl_ctx, port=4430)
 
