@@ -144,9 +144,10 @@ async def heartbeat_task():
   global all_websockets
   while True:
     try:
-      print('Pinging {} websockets'.format(len(all_websockets)))
-      for w in all_websockets:
-        await w.send_str('Ping!')
+      if len(all_websockets) > 0:
+        print('Pinging {} websockets'.format(len(all_websockets)))
+        for w in all_websockets:
+          await w.send_str('console.log("Ping from server!")')
     except:
       traceback.print_exc()
 
