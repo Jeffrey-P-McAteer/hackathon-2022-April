@@ -135,9 +135,17 @@ async def ws_req_handler(req):
 def main(args=sys.argv):
 
   server = aiohttp.web.Application()
-  server.add_routes([
+
+  www_file_routes = []
+  for root, dirs, files in os.walk('www'):
+    for file in files:
+      local_path = j(root, file)
+      web_path = local_path[3:]
+      print('Adding web route to file {}'.format(local_path))
+      www_file_routes.append( aiohttp.web.get(web_path, http_req_handler) )
+
+  server.add_routes(www_file_routes + [
     aiohttp.web.get('/', http_req_handler),
-    aiohttp.web.get('/index.html', http_req_handler),
     aiohttp.web.get('/ws', ws_req_handler)
   ])
 
