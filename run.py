@@ -8,6 +8,7 @@ import importlib
 import asyncio
 import ssl
 import traceback
+import json
 
 
 # Utility method to wrap imports with a call to pip to install first.
@@ -148,8 +149,12 @@ async def heartbeat_task():
     try:
       if len(all_websockets) > 0:
         print('Pinging {} websockets'.format(len(all_websockets)))
+        world_objs_str = json.dumps(world_objects)
+        world_objs_plot_js = 'console.log({})'.format(world_objs_str)
+        
         for w in all_websockets:
-          await w.send_str('console.log("Ping from server!")')
+          await w.send_str(world_objs_plot_js)
+
     except:
       traceback.print_exc()
 

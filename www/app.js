@@ -1,6 +1,8 @@
 
 window.ws_url = 'wss://'+location.hostname+':'+location.port+'/ws'
 window.socket = false;
+window.immersive_ar_supported = false;
+window.immersive_vr_supported = false;
 
 // Development cheating
 window.onerror = function(message, source, lineno, colno, error) {

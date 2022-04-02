@@ -31,7 +31,20 @@ AR JS works on iphone / android:
 
  - https://ios-viewer.webxrexperiments.com/
 
+If you need to generate an SSL cert tied to a domain name (b/c Mozilla's AR browser for iOS does not respect OS cert stores ヽ(ಠ_ಠ)ノ), using [acme.sh](https://github.com/acmesh-official/acme.sh):
 
+```bash
+yay -S acme.sh
+
+acme.sh --register-account -m me@me.com --server zerossl
+
+acme.sh --server zerossl --issue --dns -d publicip.jmcateer.pw -d localip.jmcateer.pw --yes-I-know-dns-manual-mode-enough-go-ahead-please
+# Update DNS records, wait TTL minutes.
+acme.sh --server zerossl --renew --dns -d publicip.jmcateer.pw -d localip.jmcateer.pw --yes-I-know-dns-manual-mode-enough-go-ahead-please
+
+acme.sh --install-cert -d publicip.jmcateer.pw -d localip.jmcateer.pw --cert-file ssl/just_server.crt --key-file ssl/server.key --fullchain-file ssl/server.crt
+
+```
 
 # Dependencies
 
