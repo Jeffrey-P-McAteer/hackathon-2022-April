@@ -23,3 +23,25 @@ For iOS mobile devices this will require [Mozilla's WebXR Viewer app](https://ap
 
  - https://gist.github.com/SevenW/47be2f9ab74cac26bf21
 
+VR JS Works on Oculus:
+
+ - https://immersive-web.github.io/webxr-samples/
+
+AR JS works on iphone / android:
+
+ - https://ios-viewer.webxrexperiments.com/
+
+
+
+# Dependencies
+
+ - `python` (3.8 or better or so, not picky)
+ - 
+
+
+# Running
+
+```bash
+python -m run
+```
+

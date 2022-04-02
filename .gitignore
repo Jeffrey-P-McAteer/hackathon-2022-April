@@ -1,6 +1,7 @@
 build/
 target/
 out/
+ssl/
 
 __pycache__/
 
