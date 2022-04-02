@@ -29,12 +29,7 @@ def import_maybe_installing_with_pip(import_name, pkg_name=None):
 
 # 3rd-party libs
 aiohttp = import_maybe_installing_with_pip('aiohttp')
-
-
-# Classes & API glue
-
-
-
+import aiohttp.web
 
 # Misc utilities
 def c(*args):
@@ -77,6 +72,61 @@ def get_ssl_cert_and_key_or_generate():
 
   return cert_file, key_file
 
+# Actual event-driven subroutines, plus some global memory.
+
+objects = [
+  {'type': 'circle', 'location': [0.0, 0.0, 0.0]},
+]
+
+async def http_req_handler(req):
+  peername = req.transport.get_extra_info('peername')
+  host = 'unk'
+  if peername is not None:
+    host, port = peername
+  print('http req from {} for {}'.format(host, req.path))
+
+  # Normalize & trim path
+  path = req.path.lower()
+  while path.startswith('/'):
+    path = path[1:]
+
+  if len(path) < 1:
+    path = 'index.html'
+
+  possible_www_f = j('www', path)
+
+  if e(possible_www_f):
+    print('Returning {} to {}'.format(possible_www_f, host))
+    return aiohttp.web.FileResponse(possible_www_f)
+
+  print('Returning 404 for {} to {}'.format(req.path, host))
+  return aiohttp.web.HTTPNotFound()
+
+
+async def ws_req_handler(req):
+  peername = req.transport.get_extra_info('peername')
+  host = 'unk'
+  if peername is not None:
+    host, port = peername
+
+  print('ws req from {}'.format(host))
+
+  ws = aiohttp.web.WebSocketResponse()
+  await ws.prepare(req)
+
+  async for msg in ws:
+    if msg.type == aiohttp.WSMsgType.TEXT:
+      print('WS From {}: {}'.format(host, msg.data))
+      if msg.data == 'close':
+        await ws.close()
+      else:
+        await ws.send_str(msg.data + '/answer')
+    elif msg.type == aiohttp.WSMsgType.ERROR:
+      print('ws connection closed with exception {}'.format(ws.exception()))
+
+  return ws
+
+
 ########################################################
 # 
 # Le grande main()
@@ -84,43 +134,15 @@ def get_ssl_cert_and_key_or_generate():
 ########################################################
 def main(args=sys.argv):
 
-  todos = [
-      {"id":"1","title":"Go to the garden"},
-      {"id":"2","title":"Go to the market"},
-      {"id":"3","title":"Prepare dinner"},
-  ]
-
-  import aiohttp.web
-
-  async def handle(request):
-    return aiohttp.web.json_response(todos)
-
-  async def websocket_handler(request):
-
-    ws = aiohttp.web.WebSocketResponse()
-    await ws.prepare(request)
-
-    async for msg in ws:
-        if msg.type == aiohttp.WSMsgType.TEXT:
-            if msg.data == 'close':
-                await ws.close()
-            else:
-                await ws.send_str(msg.data + '/answer')
-        elif msg.type == aiohttp.WSMsgType.ERROR:
-            print('ws connection closed with exception %s' %
-                  ws.exception())
-
-    print('websocket connection closed')
-
-    return ws
-
-
   server = aiohttp.web.Application()
-  server.add_routes([aiohttp.web.get('/', handle), aiohttp.web.get('/todos', handle), aiohttp.web.get('/ws', websocket_handler)])
+  server.add_routes([
+    aiohttp.web.get('/', http_req_handler),
+    aiohttp.web.get('/index.html', http_req_handler),
+    aiohttp.web.get('/ws', ws_req_handler)
+  ])
 
   ssl_ctx = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
   ssl_ctx.load_cert_chain(*get_ssl_cert_and_key_or_generate())
-
 
   aiohttp.web.run_app(server, ssl_context=ssl_ctx, port=4430)
 

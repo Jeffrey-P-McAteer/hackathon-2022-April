@@ -45,3 +45,10 @@ AR JS works on iphone / android:
 python -m run
 ```
 
+
+# Using
+
+Open `https://<server-ip>:4430/` in a browser on a cell phone or any VR headset.
+
+
+
