@@ -34,6 +34,9 @@ def import_maybe_installing_with_pip(import_name, pkg_name=None):
 aiohttp = import_maybe_installing_with_pip('aiohttp')
 import aiohttp.web
 
+linetimer = import_maybe_installing_with_pip('linetimer')
+from linetimer import CodeTimer
+
 # Misc utilities
 def c(*args):
   subprocess.run([x for x in args if x is not None], check=True)
@@ -131,9 +134,10 @@ async def ws_req_handler(req):
         continue
 
       # Broadcast to everyone else
-      for w in all_websockets:
-        if w != ws:
-          await w.send_str(msg.data)
+      with CodeTimer('Broadcast to everyone else', unit='ms'):
+        for w in all_websockets:
+          if w != ws:
+            await w.send_str(msg.data)
       
     elif msg.type == aiohttp.WSMsgType.ERROR:
       print('ws connection closed with exception {}'.format(ws.exception()))
@@ -152,20 +156,20 @@ async def heartbeat_task():
   while True:
     try:
       if len(all_websockets) > 0:
-        print('Pinging {} websockets'.format(len(all_websockets)))
-        world_objs_str = json.dumps(world_objects)
-        world_objs_plot_js = 'draw_geometries({})'.format(world_objs_str)
-        
-        ws_to_rm = []
-        for w in all_websockets:
-          try:
-            await w.send_str(world_objs_plot_js)
-          except:
-            traceback.print_exc()
-            ws_to_rm.append(w)
+        with CodeTimer('Pinging {} websockets'.format(len(all_websockets)), unit='ms'):
+          world_objs_str = json.dumps(world_objects)
+          world_objs_plot_js = 'draw_geometries({})'.format(world_objs_str)
+          
+          ws_to_rm = []
+          for w in all_websockets:
+            try:
+              await w.send_str(world_objs_plot_js)
+            except:
+              traceback.print_exc()
+              ws_to_rm.append(w)
 
-        for w in ws_to_rm:
-          all_websockets.remove(w)
+          for w in ws_to_rm:
+            all_websockets.remove(w)
 
       # Also move object randomly
       for obj in world_objects:
@@ -175,7 +179,8 @@ async def heartbeat_task():
     except:
       traceback.print_exc()
 
-    await asyncio.sleep(3)
+    # Wait 1 second plus 1/5 second per device (room size of 5 clients means 2 second delays)
+    await asyncio.sleep(1.0 + (0.2 * len(all_websockets)))
 
 ########################################################
 # 
