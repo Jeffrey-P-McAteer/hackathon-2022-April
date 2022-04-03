@@ -84,5 +84,5 @@ Jeffrey enjoys making cool things and, while very talented, is at times a little
 "I'm so pessimistic about *everything*."
 &mdash; Jeffrey McAteer
 
-![Image of Jeff](imgs/jeff.png)
+![Image of Jeff](https://avatars.githubusercontent.com/u/15269507?v=4)
 
