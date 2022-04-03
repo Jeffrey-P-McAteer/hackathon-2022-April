@@ -47,10 +47,6 @@
       <a-asset-item id="building_model" src="models/office.obj"></a-asset-item>
     </a-assets>
     
-    <!-- <a-entity id="rig" position="0.60 0.36 0.75" rotation="0 45 0">
-      <a-entity id="camera" camera look-controls wasd-controls fov="90" cursor="rayOrigin: mouse;"></a-entity>
-      <a-entity laser-controls="hand: right"></a-entity>
-    </a-entity> -->
     <a-entity id="camera-parent" movement-controls="fly: true" position="0.60 0 0.75" camera-property-listener>
       <a-entity id="camera" camera position="0 0.36 0" look-controls></a-entity>
       <a-entity cursor="rayOrigin:mouse" raycaster="objects: .raytarget"></a-entity>
@@ -62,7 +58,10 @@
     <a-entity position="0 3.6 -0.5" rotation="90 45 0" text="value: Skybox credit from\nYoGames Studios!; color: #a0a0a0; side: front;" scale="4 4 4"></a-entity>
 
     <!-- <a-plane position="-0.5 0 0" rotation="-90 0 0" width="2" height="2" color="#121212" shadow></a-plane> -->
-    <a-obj-model src="#building_model" position="0.6 0.5 -0.6" rotation="0 0 0" width="2" height="2" scale="0.05 0.05 0.05" color="#a7a88d" material="side: double;" shadow></a-obj-model>
+    <a-obj-model src="#building_model" position="0.6 0.5 -0.6" rotation="0 0 0" width="2" height="2" scale="0.08 0.08 0.08" color="#a7a88d" material="side: double;" shadow></a-obj-model>
+
+    <a-light type="point" color="#fefefe" intensity="0.5" decay="1" position="0 0.8 0"></a-light>
+    <a-sphere color="#fefefe" radius="0.03" position="0 0.8 0"></a-sphere>
 
     <a-entity position="1.01 0 0" rotation="0 0 0" text="value: 1-0-0; color: #fe0e0e; side: double;"></a-entity>
     <a-entity position="0 1.01 0" rotation="0 0 0" text="value: 0-1-0; color: #0efe0e; side: double;"></a-entity>
