@@ -64,7 +64,8 @@ function remove_camera_named(name) {
 function move_camera_named(name, pos_x, pos_y, pos_z, rot_x, rot_y, rot_z) {
   if (name in window.geometries && window.geometries[name]) {
     // Cheating, move all cameras 0.25 higher
-    pos_y += 0.25;
+    //pos_y += 0.25;
+    pos_y += 0.95;
 
     var p = window.geometries[name].getAttribute('position');
     var r = window.geometries[name].getAttribute('rotation');
@@ -106,10 +107,14 @@ function move_camera_named(name, pos_x, pos_y, pos_z, rot_x, rot_y, rot_z) {
 
 function add_camera_named(name) {
   remove_camera_named(name);
-  window.geometries[name] = document.createElement('a-sphere');
+  //window.geometries[name] = document.createElement('a-sphere');
+  window.geometries[name] = document.createElement('a-obj-model');
+  window.geometries[name].setAttribute('src', '#player_model');
+  window.geometries[name].setAttribute('mtl', '#player_model_mtl');
   window.geometries[name].setAttribute('position', '0 0 0');
   window.geometries[name].setAttribute('radius', '0.08');
   window.geometries[name].setAttribute('color', '#fefefe');
+  window.geometries[name].setAttribute('scale', '0.02 0.02 0.02');
   window.geometries[name].setAttribute('name', name);
 
   document.getElementById('ar-scene').appendChild(window.geometries[name]);
