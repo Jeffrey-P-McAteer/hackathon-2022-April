@@ -23,6 +23,7 @@
   <!-- <script src="https://aframe.io/releases/0.7.1/aframe.min.js"></script> -->
   <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+  <!-- <script src="//cdn.jsdelivr.net/gh/donmccurdy/aframe-physics-system@v3.2.0/dist/aframe-physics-system.min.js"></script> -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/clone/1.0.4/clone.min.js"></script>
 
 
@@ -36,7 +37,7 @@
   
   <div id="experience_target" style="position:absolute; top:0; left:0; width: 200pt; height:50pt;"></div>
 
-  <a-scene id='ar-scene' shadow="type: pcf" light="defaultLightsEnabled: false">
+  <a-scene id='ar-scene' shadow="type: pcf" light="defaultLightsEnabled: false" physics="false">
     <a-assets>
       <!-- Skybox credit from YoGames Studios! -->
       <img id="sky" src="imgs/sky.jpg">
@@ -65,7 +66,7 @@
     <a-obj-model src="#nav_mesh_model" position="0.6 0.55 -0.6" rotation="0 0 0" width="2" height="2" scale="0.09 0.09 0.09" color="#604830" material="side: double;" shadow="receive: true" nav-mesh></a-obj-model>
 
     <!-- graphics (nav-mesh ineffective) -->
-    <a-obj-model src="#building_model" position="0.6 0.5 -0.6" rotation="0 0 0" width="2" height="2" scale="0.09 0.09 0.09" color="#a7a88d" material="side: double;" shadow="receive: true" ></a-obj-model>
+    <a-obj-model src="#building_model" position="0.6 0.5 -0.6" rotation="0 0 0" width="2" height="2" scale="0.09 0.09 0.09" color="#a7a88d" material="side: double;" shadow="receive: true"></a-obj-model>
 
     <a-entity light="type: ambient; color: #BBB; castShadow: true; shadowCameraVisible: false;" shadowMapHeight="256" shadowMapWidth="256"></a-entity>
     <a-entity light="type: directional; color: #FFF; intensity: 0.6; castShadow: true; shadowCameraVisible: false;" position="-0.5 1 1" shadowMapHeight="256" shadowMapWidth="256"></a-entity>
