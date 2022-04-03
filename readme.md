@@ -77,5 +77,23 @@ python -m run
 
 Open `https://<server-ip>:4430/` in a browser on a cell phone or any VR headset. For Mozilla's WebXR viewer on iOS you will _require_ a publicly-signed ssl certificate from an ACME provider. Because we are testing these on private networks, my recommendation is to use the DNS challenge (documented above using `acme.sh`) and install the cert issued from there.
 
+# About the Authors
 
 
+## Jeff
+
+Jeffrey enjoys making cool things. He is clever as he is confident and not least of all he is a very good friend. He can do anything and while very talented, he is at times a little pessimistic by his own account.
+
+"I'm so pessimistic about *everything*."  
+&mdash; Jeffrey McAteer
+
+![Image of Jeff](www/imgs/jeff.png)
+
+## Adam
+
+Adam loves connecting people and ideas. He is enjoying learning new things and is eager to meet creators and other people who can't stop making things. Adam is passionate and will sometimes talk very excitedly about his interests. 
+
+"Can you repeat that? I was thinking about something else, *related to this project* but I totally zoned out my bad"  
+&mdash; Adam Becerra
+
+![Image of Adam](www/imgs/adam.jpg)
