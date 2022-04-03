@@ -66,7 +66,7 @@ function move_camera_named(name, pos_x, pos_y, pos_z, rot_x, rot_y, rot_z) {
   if (name in window.geometries && window.geometries[name]) {
     // Cheating, move all cameras 0.25 higher
     //pos_y += 0.25;
-    pos_y += 0.95;
+    pos_y += 0.24;
 
     var p = window.geometries[name].getAttribute('position');
     var r = window.geometries[name].getAttribute('rotation');
