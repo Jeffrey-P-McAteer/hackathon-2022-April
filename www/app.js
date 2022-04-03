@@ -42,6 +42,9 @@ setInterval(setup_ws, 6000);
 setup_ws();
 
 function set_my_name(name) {
+  if (window.my_name.length > 0) {
+    window.socket.send('remove_camera_named("'+name+'")');
+  }
   window.my_name = name;
   window.socket.send('add_camera_named("'+name+'")');
 }
