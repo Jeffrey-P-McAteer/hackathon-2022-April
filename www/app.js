@@ -352,6 +352,12 @@ setInterval(function() {
   if (window.my_name.length > 1) {
     var r = window.last_camera_rotation;
     var p = window.last_camera_position;
-    window.socket.send('move_camera_named("'+window.my_name+'", '+p.x+', '+p.y+', '+p.z+', '+r._x+', '+r._y+', '+r._z+');');
+    if (r && p) {
+      window.socket.send('move_camera_named("'+window.my_name+'", '+p.x+', '+p.y+', '+p.z+', '+r._x+', '+r._y+', '+r._z+');');
+    }
   }
 }, 5200);
+
+// Lame & bad hack to silence three.js warnings
+console.warn = function(a,b,c,d,e,f,g,h,i) { };
+
