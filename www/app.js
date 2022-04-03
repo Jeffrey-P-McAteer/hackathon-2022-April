@@ -117,7 +117,7 @@ function add_camera_named(name) {
   window.geometries[name].setAttribute('color', '#fefefe');
   //window.geometries[name].setAttribute('scale', '0.02 0.02 0.02');
   window.geometries[name].setAttribute('scale', '1 1 1');
-  window.geometries[name].setAttribute('shadow', 'cast: true;');
+  window.geometries[name].setAttribute('shadow', 'cast:true; receive:true');
   window.geometries[name].setAttribute('name', name);
 
   document.getElementById('ar-scene').appendChild(window.geometries[name]);
@@ -127,7 +127,7 @@ function add_camera_named(name) {
   window.geometries[name+'_label'].setAttribute('color', '#fefefe');
   window.geometries[name+'_label'].setAttribute('side', 'double');
   window.geometries[name+'_label'].setAttribute('scale', '0.3 0.3 0.3');
-  window.geometries[name+'_label'].setAttribute('shadow', 'cast: true;');
+  window.geometries[name+'_label'].setAttribute('shadow', 'cast:true; receive:true');
   window.geometries[name+'_label'].setAttribute('name', name);
   window.geometries[name+'_label'].setAttribute('value', name);
 
@@ -186,6 +186,7 @@ function draw_geometries(world_objects) {
         window.geometries[name].setAttribute('position', o['location'][0]+' '+o['location'][1]+' '+o['location'][2]);
         window.geometries[name].setAttribute('radius', o['radius'] ?? '0.10');
         window.geometries[name].setAttribute('color', '#EF2D5E');
+        window.geometries[name].setAttribute('shadow', 'cast:true; receive:true');
         window.geometries[name].setAttribute('name', name);
         window.geometries[name].classList.add('raytarget');
 
