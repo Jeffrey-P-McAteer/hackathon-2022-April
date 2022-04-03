@@ -59,6 +59,9 @@ window.socket.send('location.reload();')
 
  - https://jesstelford.github.io/aframe-click-drag-component/
 
+ - https://michael-mcanally.medium.com/advanced-hello-world-for-a-frame-68738e022f07
+ - https://rocketvirtual.com/aframePACKAGE/AdvancedHelloWorld.html
+
 
 # Dependencies
 
