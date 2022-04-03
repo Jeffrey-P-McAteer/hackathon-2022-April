@@ -44,6 +44,7 @@ setup_ws();
 function set_my_name(name) {
   if (window.my_name.length > 0) {
     window.socket.send('remove_camera_named("'+name+'")');
+    remove_camera_named(name);
   }
   window.my_name = name;
   window.socket.send('add_camera_named("'+name+'")');
@@ -114,7 +115,8 @@ function add_camera_named(name) {
   window.geometries[name].setAttribute('position', '0 0 0');
   window.geometries[name].setAttribute('radius', '0.08');
   window.geometries[name].setAttribute('color', '#fefefe');
-  window.geometries[name].setAttribute('scale', '0.02 0.02 0.02');
+  //window.geometries[name].setAttribute('scale', '0.02 0.02 0.02');
+  window.geometries[name].setAttribute('scale', '1 1 1');
   window.geometries[name].setAttribute('name', name);
 
   document.getElementById('ar-scene').appendChild(window.geometries[name]);
