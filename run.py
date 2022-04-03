@@ -86,6 +86,24 @@ def get_ssl_cert_and_key_or_generate():
 
   return cert_file, key_file
 
+def get_local_ip():
+    import socket
+    """Try to determine the local IP address of the machine."""
+    try:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+        # Use Google Public DNS server to determine own IP
+        sock.connect(('8.8.8.8', 80))
+
+        return sock.getsockname()[0]
+    except socket.error:
+        try:
+            return socket.gethostbyname(socket.gethostname())
+        except socket.gaierror:
+            return '127.0.0.1'
+    finally:
+        sock.close() 
+
 # Actual event-driven subroutines, plus some global memory.
 
 world_objects = [
@@ -225,6 +243,8 @@ def main(args=sys.argv):
 
   ssl_ctx = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
   ssl_ctx.load_cert_chain(cert_file, key_file)
+
+  print('Your LAN ip address is: https://{}:4430/'.format(get_local_ip()))
 
   aiohttp.web.run_app(server, ssl_context=ssl_ctx, port=4430)
 
