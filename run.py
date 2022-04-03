@@ -48,6 +48,14 @@ def maybe(fun):
     traceback.print_exc()
     return None
 
+async def maybe_await(fun):
+  try:
+    return await fun()
+  except:
+    traceback.print_exc()
+    return None
+
+
 def j(*file_path_parts):
   return os.path.join(*[x for x in file_path_parts if x is not None])
 
@@ -126,6 +134,8 @@ async def ws_req_handler(req):
 
   all_websockets.append(ws)
 
+  await ws.send_str('set_my_name("{}")'.format(host))
+
   async for msg in ws:
     if msg.type == aiohttp.WSMsgType.TEXT:
       print('WS From {}: {}'.format(host, msg.data))
@@ -137,12 +147,15 @@ async def ws_req_handler(req):
       with CodeTimer('Broadcast to everyone else', unit='ms'):
         for w in all_websockets:
           if w != ws:
-            await w.send_str(msg.data)
+            await maybe_await(lambda: w.send_str(msg.data))
       
     elif msg.type == aiohttp.WSMsgType.ERROR:
       print('ws connection closed with exception {}'.format(ws.exception()))
 
   all_websockets.remove(ws)
+
+  for w in all_websockets:
+    await maybe_await(lambda: w.send_str('remove_camera_named("{}")'.format(host)))
 
   return ws
 
@@ -174,13 +187,13 @@ async def heartbeat_task():
       # Also move object randomly
       for obj in world_objects:
         if obj.get('name', '') == 'obj-01':
-          obj['location'][0] = random.uniform(-0.25, 0.25)
+          obj['location'][0] = random.uniform(-0.40, 0.40)
 
     except:
       traceback.print_exc()
 
     # Wait 1 second plus 1/5 second per device (room size of 5 clients means 2 second delays)
-    await asyncio.sleep(3.0 + (0.2 * len(all_websockets)))
+    await asyncio.sleep(1.0 + (0.2 * len(all_websockets)))
 
 ########################################################
 # 
