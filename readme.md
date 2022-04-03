@@ -93,7 +93,7 @@ Jeffrey enjoys making cool things. He is clever as he is confident and not least
 
 Adam loves connecting people and ideas. He is enjoying learning new things and is eager to meet creators and other people who can't stop making things. Adam is passionate and will sometimes talk very excitedly about his interests. 
 
-"Can you repeat that? I was thinking about something else, *related to this project* but I totally zoned out my bad"  
+"Can you repeat that? I was thinking about something else, *related to this project*, but I totally zoned out my bad"  
 &mdash; Adam Becerra
 
 ![Image of Adam](www/imgs/adam.jpg)
