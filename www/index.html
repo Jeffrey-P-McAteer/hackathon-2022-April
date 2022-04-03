@@ -40,9 +40,11 @@
     <a-assets>
       <!-- Skybox credit from YoGames Studios! -->
       <img id="sky" src="imgs/sky.jpg">
-      <!-- Credit Vincent Yanez (https://sketchfab.com/vinceyanez) https://sketchfab.com/3d-models/minecraft-steve-cb228dcc137042cc9a3dc588758cc6e9 -->
-      <a-asset-item id="player_model" src="models/girl/girl%20OBJ.obj"></a-asset-item>
-      <a-asset-item id="player_model_mtl" src="models/girl/girl%20OBJ.mtl"></a-asset-item>
+      
+      <!-- <a-asset-item id="player_model" src="models/girl/girl%20OBJ.obj"></a-asset-item>
+      <a-asset-item id="player_model_mtl" src="models/girl/girl%20OBJ.mtl"></a-asset-item> -->
+
+      <a-asset-item id="building_model" src="models/office.obj"></a-asset-item>
     </a-assets>
     
     <!-- <a-entity id="rig" position="0.60 0.36 0.75" rotation="0 45 0">
@@ -59,7 +61,8 @@
 
     <a-entity position="0 3.6 -0.5" rotation="90 45 0" text="value: Skybox credit from\nYoGames Studios!; color: #a0a0a0; side: front;" scale="4 4 4"></a-entity>
 
-    <a-plane position="-0.5 0 0" rotation="-90 0 0" width="2" height="2" color="#121212" shadow></a-plane>
+    <!-- <a-plane position="-0.5 0 0" rotation="-90 0 0" width="2" height="2" color="#121212" shadow></a-plane> -->
+    <a-obj-model src="#building_model" position="0.6 0.5 -0.6" rotation="0 0 0" width="2" height="2" scale="0.05 0.05 0.05" color="#a7a88d" material="side: double;" shadow></a-obj-model>
 
     <a-entity position="1.01 0 0" rotation="0 0 0" text="value: 1-0-0; color: #fe0e0e; side: double;"></a-entity>
     <a-entity position="0 1.01 0" rotation="0 0 0" text="value: 0-1-0; color: #0efe0e; side: double;"></a-entity>

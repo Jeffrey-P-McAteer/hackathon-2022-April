@@ -107,10 +107,10 @@ function move_camera_named(name, pos_x, pos_y, pos_z, rot_x, rot_y, rot_z) {
 
 function add_camera_named(name) {
   remove_camera_named(name);
-  //window.geometries[name] = document.createElement('a-sphere');
-  window.geometries[name] = document.createElement('a-obj-model');
-  window.geometries[name].setAttribute('src', '#player_model');
-  window.geometries[name].setAttribute('mtl', '#player_model_mtl');
+  window.geometries[name] = document.createElement('a-sphere');
+  //window.geometries[name] = document.createElement('a-obj-model');
+  //window.geometries[name].setAttribute('src', '#player_model');
+  //window.geometries[name].setAttribute('mtl', '#player_model_mtl');
   window.geometries[name].setAttribute('position', '0 0 0');
   window.geometries[name].setAttribute('radius', '0.08');
   window.geometries[name].setAttribute('color', '#fefefe');
