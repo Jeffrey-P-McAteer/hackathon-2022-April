@@ -82,7 +82,7 @@ Open `https://<server-ip>:4430/` in a browser on a cell phone or any VR headset.
 Jeffrey enjoys making cool things and, while very talented, is at times a little pessimistic.
 
 "I'm so pessimistic about *everything*."
-- Jeffrey McAteer
+&mdash; Jeffrey McAteer
 
-![alt text](imgs/jeff.png)
+![Image of Jeff](imgs/jeff.png)
 
