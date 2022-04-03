@@ -36,7 +36,7 @@
   
   <div id="experience_target" style="position:absolute; top:0; left:0; width: 200pt; height:50pt;"></div>
 
-  <a-scene id='ar-scene' shadow="type: pcf" >
+  <a-scene id='ar-scene' shadow="type: pcf" light="defaultLightsEnabled: false">
     <a-assets>
       <!-- Skybox credit from YoGames Studios! -->
       <img id="sky" src="imgs/sky.jpg">
@@ -60,6 +60,9 @@
     <!-- <a-plane position="-0.5 0 0" rotation="-90 0 0" width="2" height="2" color="#121212" shadow></a-plane> -->
     <!-- <a-plane position="-0.5 -0.9 0" rotation="-90 0 0" width="3" height="3" color="#a7a88d" shadow="cast:true; receive:true"></a-plane> -->
     <a-obj-model src="#building_model" position="0.6 0.5 -0.6" rotation="0 0 0" width="2" height="2" scale="0.09 0.09 0.09" color="#a7a88d" material="side: double;" shadow="receive: true"></a-obj-model>
+
+    <a-entity light="type: ambient; color: #BBB; castShadow: true; shadowCameraVisible: true;" shadowMapHeight="1024" shadowMapWidth="1024"></a-entity>
+    <a-entity light="type: directional; color: #FFF; intensity: 0.6; castShadow: true; shadowCameraVisible: true;" position="-0.5 1 1" shadowMapHeight="1024" shadowMapWidth="1024"></a-entity>
 
     <!-- <a-light type="point" color="#fefefe" intensity="0.5" decay="1" position="0 0.9 0" castShadow="true"></a-light> -->
     <!-- <a-sphere color="#fefefe" radius="0.03" position="0 0.9 0" material="side: double;" shadow="receive: false"></a-sphere> -->
