@@ -342,7 +342,19 @@ AFRAME.registerComponent('camera-property-listener', {
         window.last_camera_rotation = clone(this.el.object3D.rotation);
         window.last_camera_position = clone(this.el.object3D.position);
 
-        console.log('window.last_camera_position=', window.last_camera_position);
+        //console.log('window.last_camera_position=', window.last_camera_position);
+        // Wall collision stuff
+        if (p.x > 2.4) {
+          p.x = 2.4;
+          this.el.object3D.position = p;
+          document.querySelector("#camera-parent").object3D.position.set(p.x, p.y, p.z);
+        }
+        if (p.z > 6.3) {
+          p.z = 6.3;
+          this.el.object3D.position = p;
+          document.querySelector("#camera-parent").object3D.position.set(p.x, p.y, p.z);
+        }
+
       }
     }
 

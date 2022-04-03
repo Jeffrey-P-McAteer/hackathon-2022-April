@@ -63,10 +63,10 @@
 
     <!-- motion-constraint w/ nav-mesh -->
     <!-- <a-plane position="-0.8 -0.9 0" rotation="-90 0 0" width="2" height="2" color="#97987d" shadow="cast:false; receive:false" material="side: double;" nav-mesh></a-plane> -->
-    <a-obj-model src="#nav_mesh_model" position="0.6 0.55 -0.6" rotation="0 0 0" width="2" height="2" scale="0.09 0.09 0.09" color="#604830" material="side: double;"></a-obj-model>
+    <a-obj-model src="#nav_mesh_model" position="0.6 0.55 -0.6" rotation="0 0 0" width="2" height="2" scale="0.09 0.09 0.09" color="#604830" material="side: double;" shadow="receive: true"></a-obj-model>
 
     <!-- graphics (nav-mesh ineffective) -->
-    <a-obj-model src="#building_model" position="0.6 0.5 -0.6" rotation="0 0 0" width="2" height="2" scale="0.09 0.09 0.09" color="#a7a88d" material="side: double;"></a-obj-model>
+    <a-obj-model src="#building_model" position="0.6 0.5 -0.6" rotation="0 0 0" width="2" height="2" scale="0.09 0.09 0.09" color="#a7a88d" material="side: double;" shadow="receive: true"></a-obj-model>
 
     <a-entity light="type: ambient; color: #BBB; castShadow: true; shadowCameraVisible: false;" shadowMapHeight="256" shadowMapWidth="256"></a-entity>
     <a-entity light="type: directional; color: #FFF; intensity: 0.6; castShadow: true; shadowCameraVisible: false;" position="-0.5 1 1" shadowMapHeight="256" shadowMapWidth="256"></a-entity>
