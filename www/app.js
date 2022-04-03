@@ -115,7 +115,7 @@ function add_camera_named(name) {
   window.geometries[name+'_label'].setAttribute('position', '0 0.4 0');
   window.geometries[name+'_label'].setAttribute('color', '#fefefe');
   window.geometries[name+'_label'].setAttribute('side', 'double');
-  window.geometries[name+'_label'].setAttribute('scale', '0.4 0.4 0.4');
+  window.geometries[name+'_label'].setAttribute('scale', '0.3 0.3 0.3');
   window.geometries[name+'_label'].setAttribute('name', name);
   window.geometries[name+'_label'].setAttribute('value', name);
 
@@ -333,11 +333,11 @@ AFRAME.registerComponent('camera-property-listener', {
   }
 });
 
-// Also blast our position every 3 seconds no matter what;
+// Also blast our position every 5 seconds no matter what;
 setInterval(function() {
   if (window.my_name.length > 1) {
     var r = window.last_camera_rotation;
     var p = window.last_camera_position;
     window.socket.send('move_camera_named("'+window.my_name+'", '+p.x+', '+p.y+', '+p.z+', '+r._x+', '+r._y+', '+r._z+');');
   }
-}, 3200);
+}, 5200);
