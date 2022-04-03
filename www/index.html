@@ -47,7 +47,7 @@
       <a-asset-item id="building_model" src="models/office.obj"></a-asset-item>
     </a-assets>
     
-    <a-entity id="camera-parent" movement-controls="constrainToNavMesh: true" position="0.60 0 0.75" kinematic-body camera-property-listener>
+    <a-entity id="camera-parent" movement-controls="enabled: true; constrainToNavMesh: true; speed: 0.25; fly: false; camera: #camera; " position="0.60 0 0.75" kinematic-body camera-property-listener>
       <a-entity id="camera" camera position="0 0.36 0" look-controls="pointerLockEnabled: false;"></a-entity>
       <a-entity cursor="rayOrigin:mouse" raycaster="objects: .raytarget"></a-entity>
       <a-entity laser-controls="hand: right"></a-entity>
@@ -59,7 +59,7 @@
 
     <!-- motion-constraint w/ nav-mesh -->
     <a-plane position="-0.8 -0.9 0" rotation="-90 0 0" width="2" height="2" color="#97987d" shadow="cast:false; receive:false" material="side: double;" nav-mesh></a-plane>
-    <a-plane position="-2.0 0 6.7" rotation="0 0 0" width="2" height="2" color="#97987d" shadow="cast:false; receive:false" material="side: double;" nav-mesh></a-plane>
+    <!-- <a-plane position="-2.0 0 6.7" rotation="0 0 0" width="2" height="2" color="#97987d" shadow="cast:false; receive:false" material="side: double;" nav-mesh></a-plane> -->
     
     <!-- graphics (nav-mesh ineffective) -->
     <a-obj-model src="#building_model" position="0.6 0.5 -0.6" rotation="0 0 0" width="2" height="2" scale="0.09 0.09 0.09" color="#a7a88d" material="side: double;" shadow="receive: true" ></a-obj-model>
