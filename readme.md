@@ -8,6 +8,13 @@ Plan:
     - Serve a websocket comm ring the web app can use to keep state in sync across all connected devices (1 server == 1 "room")
     - Voice comm ring as well? May need to dip into WebRTC nonsense.
 
+# Public Server
+
+https://hackathon-2022-april.jmcateer.pw:4430/
+
+The server runs `git pull` every hour, so the latest committed `www/` directory will be served. To re-start the python process (for new files & websocket routing logic) login to the server and run `sudo systemctl restart hackathon-2022-april.service`
+
+
 # Misc research
 
 We will be using the [WebXR Device API](https://www.w3.org/TR/webxr/) to use native AR/VR capabilities for display and pointer/hand input.
