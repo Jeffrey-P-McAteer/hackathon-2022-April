@@ -213,12 +213,12 @@ async def heartbeat_task():
     # Wait 1 second plus 1/5 second per device (room size of 5 clients means 2 second delays)
     await asyncio.sleep(1.0 + (0.2 * len(all_websockets)))
 
-########################################################
-# 
-# Le grande main()
-# 
-########################################################
-def main(args=sys.argv):
+
+def main_run_https_server(args=sys.argv):
+  # Change directory to the parent of run.py
+  repo_root = os.path.dirname(os.path.abspath(__file__))
+  print('repo_root={}'.format(repo_root))
+  os.chdir(repo_root)
 
   cert_file, key_file = get_ssl_cert_and_key_or_generate()
 
@@ -247,6 +247,92 @@ def main(args=sys.argv):
   print('Your LAN ip address is: https://{}:4430/'.format(get_local_ip()))
 
   aiohttp.web.run_app(server, ssl_context=ssl_ctx, port=4430)
+
+def install_as_systemd_service():
+  service_name = 'hackathon-2022-april'
+
+  service_file = '/etc/systemd/system/{}.service'.format(service_name)
+  run_py = os.path.abspath(__file__)
+  print('Installing {} as systemd service {}.service ({})'.format(run_py, service_name, service_file))
+
+  if os.getuid() != 0:
+    time.sleep(0.5)
+    print('WARNING: you do not appear to be root, the following tasks will likely fail!')
+    time.sleep(1)
+
+  with open(service_file, 'w') as fd:
+    fd.write(('''
+[Unit]
+Description=A Hackathon submission with legs
+After=network-online.target
+
+[Service]
+ExecStart='''+os.path.abspath(sys.executable)+''' '''+run_py+'''
+Restart=always
+RestartSec=3s
+
+[Install]
+WantedBy=multi-user.target
+
+''').strip())
+
+  # Also add a git-clone task that runs periodically
+  git_cloner_service_file = '/etc/systemd/system/{}-git-cloner.service'.format(service_name)
+  git_cloner_timer_file = '/etc/systemd/system/{}-git-cloner.timer'.format(service_name)
+  git_exe = shutil.which('git')
+
+  if git_exe:
+    print('Also adding git-clone task: {}.service ({} / {})'.format(service_name, git_cloner_service_file, git_cloner_timer_file))
+    with open(git_cloner_service_file, 'w') as fd:
+      fd.write(('''
+[Unit]
+Description=A Hackathon submission with legs (periodic git clone task)
+After=network-online.target
+
+[Service]
+ExecStart='''+os.path.abspath(git_exe)+''' pull
+WorkingDirectory='''+os.path.dirname(run_py)+'''
+
+  ''').strip())
+
+    with open(git_cloner_timer_file, 'w') as fd:
+      fd.write(('''
+[Unit]
+Description=A Hackathon submission with legs (periodic git clone task timer)
+
+[Timer]
+OnBootSec=15min
+OnUnitActiveSec=1h
+
+[Install]
+WantedBy=timers.target
+  ''').strip())
+
+  print('Installed! Next run:')
+  print('  sudo systemctl daemon-reload')
+  if git_exe:
+    print('  sudo systemctl enable --now {}-git-cloner.timer'.format(service_name))
+  print('  sudo systemctl enable --now {}.service'.format(service_name))
+  print('')
+  print('To restart the service:')
+  print('  sudo systemctl restart {}.service'.format(service_name))
+  print('To attach to / read service logs:')
+  print('  journalctl -f -u {}.service'.format(service_name))
+  print('  journalctl  -u {}.service'.format(service_name))
+
+
+
+########################################################
+# 
+# Le grande main()
+# 
+########################################################
+def main(args=sys.argv):
+  if 'install' in args:
+    install_as_systemd_service()
+  else:
+    main_run_https_server(args)
+  
 
 
 
