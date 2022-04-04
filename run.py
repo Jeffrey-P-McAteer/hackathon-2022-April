@@ -163,17 +163,14 @@ async def ws_req_handler(req):
 
       # Broadcast to everyone else
       with CodeTimer('Broadcast to everyone else', unit='ms'):
-        for w in all_websockets:
-          if w != ws:
-            await maybe_await(lambda: w.send_str(msg.data))
+        await asyncio.wait([ maybe_await(lambda: w.send_str(msg.data)) for w in all_websockets if w != ws])
       
     elif msg.type == aiohttp.WSMsgType.ERROR:
       print('ws connection closed with exception {}'.format(ws.exception()))
 
   all_websockets.remove(ws)
 
-  for w in all_websockets:
-    await maybe_await(lambda: w.send_str('remove_camera_named("{}")'.format(host)))
+  await asyncio.wait([ maybe_await(lambda: w.send_str('remove_camera_named("{}")'.format(host))) for w in all_websockets])
 
   return ws
 
