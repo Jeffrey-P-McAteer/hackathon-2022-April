@@ -419,8 +419,6 @@ AFRAME.registerComponent('camera-property-listener', {
         window.last_camera_rotation = clone(this.el.object3D.rotation);
         window.last_camera_position = clone(this.el.object3D.position);
 
-        console.log('window.last_camera_position=', window.last_camera_position);
-
       }
     }
 
