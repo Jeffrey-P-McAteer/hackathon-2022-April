@@ -48,11 +48,13 @@ def maybe(fun):
     traceback.print_exc()
     return None
 
-async def maybe_await(fun):
+async def maybe_await(fun, on_exception=None):
   try:
     return await fun()
   except:
     traceback.print_exc()
+    if on_exception != None:
+      return on_exception()
     return None
 
 
@@ -189,13 +191,11 @@ async def heartbeat_task():
           world_objs_plot_js = 'draw_geometries({})'.format(world_objs_str)
           
           ws_to_rm = []
-          for w in all_websockets:
-            try:
-              await w.send_str(world_objs_plot_js)
-            except:
-              traceback.print_exc()
-              ws_to_rm.append(w)
 
+          await asyncio.gather(*[ maybe_await(lambda: w.send_str(world_objs_plot_js), on_exception=lambda: ws_to_rm.append(w)) for w in all_websockets])
+
+          if len(ws_to_rm) > 0:
+            print('Removing {} dead websockets...'.format(len(ws_to_rm)))
           for w in ws_to_rm:
             all_websockets.remove(w)
 
