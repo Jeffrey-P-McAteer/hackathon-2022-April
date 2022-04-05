@@ -290,6 +290,71 @@ window.camera_pos_epsilon = 0.01;
 
 // window.last_pos_str = '';
 
+window.allowed_box_geometries = [
+  [[2.4, 0.0, 6.4], [-5.75, 0.0, -2.2]], // covers large room
+  [[2.4, 0.0, -7.4], [-0.8, 0.0, -2.2]], // covers desk area
+  
+];
+
+function player_within_box(p_x, p_y, p_z, b0, b1) {
+  // TODO add y consideration, for now it's always == 0
+  return (
+    p_x > Math.min(b0[0], b1[0]) && 
+    p_x < Math.max(b0[0], b1[0]) && 
+    p_z > Math.min(b0[2], b1[2]) && 
+    p_z < Math.max(b0[2], b1[2])
+  );
+}
+
+function player_is_within_bounds(x, y, z) {
+  for (var i=0; i<window.allowed_box_geometries.length; i+=1) {
+    if (player_within_box(x, y, z, window.allowed_box_geometries[i][0], window.allowed_box_geometries[i][1])) {
+      return true;
+    }
+  }
+  return false;
+}
+
+// Assuming p1 is a colliding position vector, iterate window.allowed_box_geometries
+// and only min/max-out the colliding coordinate. Returns a modified p.
+function crop_colliding_position_vector(p) {
+  var kept_x = p.x;
+  var kept_y = p.y;
+  var kept_z = p.z;
+
+  for (var i=0; i<window.allowed_box_geometries.length; i+=1) {
+    var b0 = window.allowed_box_geometries[i][0];
+    var b1 = window.allowed_box_geometries[i][1];
+
+    var is_around_perimiter = (
+      p.x > (Math.min(b0[0], b1[0]) - 0.25) && 
+      p.x < (Math.max(b0[0], b1[0]) + 0.25) && 
+      p.z > (Math.min(b0[2], b1[2]) - 0.25) && 
+      p.z < (Math.max(b0[2], b1[2]) + 0.25)
+    );
+
+    if (!is_around_perimiter) {
+      continue;
+    }
+    else {
+      kept_x = Math.max(Math.min(b0[0], b1[0]), Math.min(
+        kept_x, Math.max(b0[0], b1[0])
+      ));
+
+      kept_z = Math.max(Math.min(b0[2], b1[2]), Math.min(
+        kept_z, Math.max(b0[2], b1[2])
+      ));
+      break; // Only consider a single box for now
+    }
+
+  }
+
+  p.x = kept_x;
+  p.y = kept_y;
+  p.z = kept_z;
+  return p;
+}
+
 AFRAME.registerComponent('camera-property-listener', {
   tick: function () {
     // `this.el` is the element.
@@ -302,6 +367,15 @@ AFRAME.registerComponent('camera-property-listener', {
     //   console.log('this.el.object3D.position=', this.el.object3D.position);
     //   print_stuff = true;
     // }
+
+    // Wall collision stuff
+    if (!player_is_within_bounds(this.el.object3D.position.x, this.el.object3D.position.y, this.el.object3D.position.z)) {
+      var p = crop_colliding_position_vector(this.el.object3D.position);
+      this.el.object3D.position = p;
+      document.querySelector("#camera-parent").object3D.position.set(p.x, p.y, p.z);
+      // Exit, never writing to window.last_camera_position
+      return;
+    }
 
     // `rotation` is a three.js Euler using radians. `quaternion` also available.
     if (!window.last_camera_rotation) {
@@ -335,25 +409,14 @@ AFRAME.registerComponent('camera-property-listener', {
       if (window.my_name.length > 1) {
         var r = window.last_camera_rotation;
         var p = window.last_camera_position;
-        window.socket.send('move_camera_named("'+window.my_name+'", '+p.x+', '+p.y+', '+p.z+', '+r._x+', '+r._y+', '+r._z+');');
-        //console.log('move_camera_named("'+window.my_name+'", '+p.x+', '+p.y+', '+p.z+', '+r._x+', '+r._y+', '+r._z+');');
 
+        window.socket.send('move_camera_named("'+window.my_name+'", '+p.x+', '+p.y+', '+p.z+', '+r._x+', '+r._y+', '+r._z+');');
+        
         // Save positions as well
         window.last_camera_rotation = clone(this.el.object3D.rotation);
         window.last_camera_position = clone(this.el.object3D.position);
 
-        //console.log('window.last_camera_position=', window.last_camera_position);
-        // Wall collision stuff
-        if (p.x > 2.4) {
-          p.x = 2.4;
-          this.el.object3D.position = p;
-          document.querySelector("#camera-parent").object3D.position.set(p.x, p.y, p.z);
-        }
-        if (p.z > 6.3) {
-          p.z = 6.3;
-          this.el.object3D.position = p;
-          document.querySelector("#camera-parent").object3D.position.set(p.x, p.y, p.z);
-        }
+        console.log('window.last_camera_position=', window.last_camera_position);
 
       }
     }
