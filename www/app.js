@@ -292,7 +292,10 @@ window.camera_pos_epsilon = 0.01;
 
 window.allowed_box_geometries = [
   [[2.4, 0.0, 6.4], [-5.75, 0.0, -2.2]], // covers large room
-  [[2.4, 0.0, -7.4], [-0.8, 0.0, -2.2]], // covers desk area
+  [[1.2, 0.0, -2.7], [0.0, 0.0, -2.1]], // small zone where large room -> desk area door is
+  [[2.4, 0.0, -7.4], [-0.8, 0.0, -2.6]], // covers desk area
+  [[-4.05, 0.0, -3.0], [-4.6, 0.0, -2.2]], // small zone where bedroom / outside door is
+  [[-1.8, 0.0, -6.0], [-4.6, 0.0, -2.8]], // remainder of empty "room" after player passes through door, z=-2.2 => -2.8 is an unpassable wall.
   
 ];
 
