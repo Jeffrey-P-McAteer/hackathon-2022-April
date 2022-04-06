@@ -90,8 +90,8 @@ function move_camera_named(name, pos_x, pos_y, pos_z, rot_x, rot_y, rot_z) {
     var p = window.geometries[name+'_label'].getAttribute('position');
     var r = window.geometries[name+'_label'].getAttribute('rotation');
 
-    p.x = pos_x - 0.2;
-    p.y = pos_y + 0.4;
+    p.x = pos_x;
+    p.y = pos_y + 0.38;
     p.z = pos_z;
     
     r._x = rot_x;
@@ -113,6 +113,9 @@ function move_camera_named(name, pos_x, pos_y, pos_z, rot_x, rot_y, rot_z) {
 
 function add_camera_named(name) {
   remove_camera_named(name);
+  if (window.my_name == name) {
+    return; // We never draw our own player model!
+  }
   window.geometries[name] = document.createElement('a-sphere');
   //window.geometries[name] = document.createElement('a-obj-model');
   //window.geometries[name].setAttribute('src', '#player_model');
@@ -132,10 +135,12 @@ function add_camera_named(name) {
   window.geometries[name+'_label'].setAttribute('color', '#fefefe');
   window.geometries[name+'_label'].setAttribute('side', 'double');
   window.geometries[name+'_label'].setAttribute('scale', '0.3 0.3 0.3');
-  window.geometries[name+'_label'].setAttribute('shadow', 'cast:true; receive:true');
+  window.geometries[name+'_label'].setAttribute('shadow', 'cast:true; receive:false');
+  window.geometries[name+'_label'].setAttribute('anchor', 'center');
+  window.geometries[name+'_label'].setAttribute('baseline', 'center');
   window.geometries[name+'_label'].setAttribute('name', name);
-  window.geometries[name+'_label'].setAttribute('value', name);
-
+  window.geometries[name+'_label'].setAttribute('value', '\u200B\u200C\u200D\uFEFF                                 '+name); // whitespace centers text over player models, non-printing unicode prevents string trimming
+  
   document.getElementById('ar-scene').appendChild(window.geometries[name+'_label']);
 
 }
@@ -363,6 +368,17 @@ function crop_colliding_position_vector(p) {
   return p;
 }
 
+function render_window_geometry_labels_facing_camera(camera) {
+  for (const [name, g] of Object.entries(window.geometries)) { // ECMAScript 2017
+    if (!name.endsWith('_label')) {
+      continue; // only process items which are named "<XYZ>_label"
+    }
+    // https://stackoverflow.com/questions/12919638/textgeometry-to-always-face-user
+    g.object3D.lookAt( camera.position );
+  }
+}
+
+
 AFRAME.registerComponent('camera-property-listener', {
   tick: function () {
     // `this.el` is the element.
@@ -423,6 +439,8 @@ AFRAME.registerComponent('camera-property-listener', {
         // Save positions as well
         window.last_camera_rotation = clone(this.el.object3D.rotation);
         window.last_camera_position = clone(this.el.object3D.position);
+
+        render_window_geometry_labels_facing_camera(this.el.object3D);
 
       }
     }
