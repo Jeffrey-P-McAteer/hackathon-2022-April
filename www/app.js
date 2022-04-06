@@ -7,6 +7,8 @@ try {
   window.is_ios = !!navigator.platform.match(/iPhone|iPod|iPad/);
 } catch (err) { console.log(err); }
 window.my_name = '';
+// Used to opt-out of attempting to re-connect over cellular connections, which can waste tons of data.
+window.request_app_halt = false;
 
 
 // Development cheating
@@ -18,6 +20,9 @@ window.onerror = function(message, source, lineno, colno, error) {
 };
 
 function setup_ws() {
+  if (window.request_app_halt) {
+    return;
+  }
   if (!window.socket) {
     console.log('Connecting to '+window.ws_url)
     window.socket = new WebSocket(window.ws_url);
@@ -424,6 +429,17 @@ AFRAME.registerComponent('camera-property-listener', {
 
   }
 });
+
+// If the page's age is ever older than 1 hour, stop everything.
+window.page_load_s = new Date().getTime() / 1000;
+setInterval(function() {
+  var now_s = new Date().getTime() / 1000;
+  if (now_s - window.page_load_s > (60 * 60) /*&& !document.hasFocus() */) {
+    window.request_app_halt = true;
+    window.my_name = '';
+    window.socket = false;
+  }
+}, 31000);
 
 // Also blast our position every 5 seconds no matter what;
 setInterval(function() {
