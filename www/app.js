@@ -139,7 +139,7 @@ function add_camera_named(name) {
   window.geometries[name+'_label'].setAttribute('anchor', 'center');
   window.geometries[name+'_label'].setAttribute('baseline', 'center');
   window.geometries[name+'_label'].setAttribute('name', name);
-  window.geometries[name+'_label'].setAttribute('value', '\u200B\u200C\u200D\uFEFF                                 '+name); // whitespace centers text over player models, non-printing unicode prevents string trimming
+  window.geometries[name+'_label'].setAttribute('value', '\u200B\u200C\u200D\uFEFF                                  '+name); // whitespace centers text over player models, non-printing unicode prevents string trimming
   
   document.getElementById('ar-scene').appendChild(window.geometries[name+'_label']);
 
