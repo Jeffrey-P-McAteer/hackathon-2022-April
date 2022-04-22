@@ -73,8 +73,12 @@ window.socket.send('location.reload();')
 # Dependencies
 
  - `python` (3.8 or better or so, not picky)
- - 
+ - One of
+    - web browser (WASD movement controls)
+    - smartphone (for AR experience, tap screen to move forward)
+    - VR Headset (joystick to move, also move to move\*)
 
+_\* movement movement in VR does not broadcase position changes to other players, this is a known bug we need to add a few lines of JS to handle properly. Improvements incoming as soon as we get idle weekends!_
 
 # Running
 
@@ -85,7 +89,7 @@ python -m run
 
 # Using
 
-Open `https://<server-ip>:4430/` in a browser on a cell phone or any VR headset. For Mozilla's WebXR viewer on iOS you will _require_ a publicly-signed ssl certificate from an ACME provider. Because we are testing these on private networks, my recommendation is to use the DNS challenge (documented above using `acme.sh`) and install the cert issued from there.
+Open `https://<server-ip>:4430/` in a browser on a cell phone or any VR headset. For Mozilla's WebXR viewer on iOS you will _require_ a publicly-signed ssl certificate from a trusted provider (ACME servers work great for free SSL certs & are trusted by major OSes and browsers). Because we are testing these on private networks, my recommendation is to use the DNS challenge (documented above using `acme.sh`) and install the cert issued from there.
 
 # About the Authors
 
@@ -97,7 +101,7 @@ Jeffrey enjoys making cool things. He is clever as he is confident and not least
 "I'm so pessimistic about *everything*."  
 &mdash; Jeffrey McAteer
 
-![Image of Jeff](www/imgs/jeff.png)
+<img src="www/imgs/jeff.png" alt="Image of Jeff" width="250pt" />
 
 ## Adam
 
@@ -106,4 +110,6 @@ Adam loves connecting people and ideas. He is enjoying learning new things and i
 "Can you repeat that? I was thinking about something else, *related to this project*, but I totally zoned out my bad"  
 &mdash; Adam Becerra
 
-![Image of Adam](www/imgs/adam.jpg)
+<img src="www/imgs/adam.jpg" alt="Image of Adam" width="250pt" />
+
+

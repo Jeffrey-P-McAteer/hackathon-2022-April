@@ -1,4 +1,12 @@
 
+########################################################
+# This script runs the server, and someday will be a proper
+# python module (run/__init__.py, run/__main__.py, run/utils.py et al).
+# The only dependencies are aiohttp (serves files & does websocket comms)
+# and linetimer, which prints the execution time of tasks.
+########################################################
+
+
 # Python builtins
 import os
 import sys
