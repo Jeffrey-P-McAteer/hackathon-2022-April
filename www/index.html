@@ -37,7 +37,7 @@
   
   <div id="experience_target"></div>
 
-  <a-scene id='ar-scene' light="defaultLightsEnabled: false" physics="false">
+  <a-scene id='ar-scene' light="defaultLightsEnabled: false" physics="false" shadow="type: pcfsoft">
     <a-assets>
       <!-- Skybox credit from YoGames Studios! -->
       <img id="sky" src="imgs/sky.jpg">
@@ -47,8 +47,8 @@
 
       <a-asset-item id="building_model" src="models/office.obj"></a-asset-item>
       <a-asset-item id="building_model_mtl" src="models/office.mtl"></a-asset-item>
-      <a-asset-item id="nav_mesh_model" src="models/floor.obj"></a-asset-item>
-      <a-asset-item id="nav_mesh_model_mtl" src="models/floor.mtl"></a-asset-item>
+      <a-asset-item id="floor_model" src="models/floor.obj"></a-asset-item>
+      <a-asset-item id="floor_model_mtl" src="models/floor.mtl"></a-asset-item>
     </a-assets>
     
     <a-entity id="camera-parent" movement-controls="enabled: true; constrainToNavMesh: true; speed: 0.25; fly: false;" position="0.60 0 0.75" camera-property-listener>
@@ -63,12 +63,30 @@
 
     <!-- motion-constraint w/ nav-mesh -->
     <!-- <a-plane position="-0.8 -0.9 0" rotation="-90 0 0" width="2" height="2" color="#97987d" shadow="cast:false; receive:false" material="side: double;" nav-mesh></a-plane> -->
-    <a-obj-model src="#nav_mesh_model" position="0.6 0.55 -0.6" rotation="0 0 0" width="2" height="2" scale="0.09 0.09 0.09" color="#604830" material="side: double;" shadow="receive: true"></a-obj-model>
+    <a-obj-model
+      src="#floor_model"
+      position="0.6 0.55 -0.6"
+      rotation="0 0 0"
+      width="2"
+      height="2"
+      scale="0.09 0.09 0.09"
+      color="#604830"
+      material="shader: phong; side: double;"
+      shadow="receive: true"></a-obj-model>
 
     <!-- graphics (nav-mesh ineffective) -->
-    <a-obj-model src="#building_model" position="0.6 0.5 -0.6" rotation="0 0 0" width="2" height="2" scale="0.09 0.09 0.09" color="#a7a88d" material="side: double;" shadow="receive: true"></a-obj-model>
+    <a-obj-model
+      src="#building_model"
+      position="0.6 0.5 -0.6"
+      rotation="0 0 0"
+      width="2"
+      height="2"
+      scale="0.09 0.09 0.09"
+      color="#a7a88d"
+      material="shader: phong; side: double;"
+      shadow="receive: true"></a-obj-model>
 
-    <a-entity light="type: ambient; color: #BBB; castShadow: true; shadowCameraVisible: false;" shadowMapHeight="256" shadowMapWidth="256"></a-entity>
+    <a-entity light="type: ambient; color: #909090; castShadow: true; shadowCameraVisible: false;" shadowMapHeight="256" shadowMapWidth="256"></a-entity>
     <a-entity light="type: directional; color: #FFF; intensity: 0.6; castShadow: true; shadowCameraVisible: false;" position="-0.5 1 1" shadowMapHeight="256" shadowMapWidth="256"></a-entity>
 
     <!-- <a-light type="point" color="#fefefe" intensity="0.5" decay="1" position="0 0.9 0" castShadow="true"></a-light> -->

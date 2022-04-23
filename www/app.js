@@ -335,15 +335,17 @@ function crop_colliding_position_vector(p) {
   var kept_y = p.y;
   var kept_z = p.z;
 
+  var test_buff_size = 0.30;
+
   for (var i=0; i<window.allowed_box_geometries.length; i+=1) {
     var b0 = window.allowed_box_geometries[i][0];
     var b1 = window.allowed_box_geometries[i][1];
 
     var is_around_perimiter = (
-      p.x > (Math.min(b0[0], b1[0]) - 0.25) && 
-      p.x < (Math.max(b0[0], b1[0]) + 0.25) && 
-      p.z > (Math.min(b0[2], b1[2]) - 0.25) && 
-      p.z < (Math.max(b0[2], b1[2]) + 0.25)
+      p.x >= (Math.min(b0[0], b1[0]) - test_buff_size) && 
+      p.x <= (Math.max(b0[0], b1[0]) + test_buff_size) && 
+      p.z >= (Math.min(b0[2], b1[2]) - test_buff_size) && 
+      p.z <= (Math.max(b0[2], b1[2]) + test_buff_size)
     );
 
     if (!is_around_perimiter) {
