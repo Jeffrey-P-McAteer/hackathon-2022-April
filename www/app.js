@@ -68,6 +68,7 @@ function remove_camera_named(name) {
 }
 
 function move_camera_named(name, pos_x, pos_y, pos_z, rot_x, rot_y, rot_z) {
+  var is_self = window.my_name == name;
   if (name in window.geometries && window.geometries[name]) {
     // Cheating, move all cameras 0.25 higher
     //pos_y += 0.25;
@@ -101,6 +102,15 @@ function move_camera_named(name, pos_x, pos_y, pos_z, rot_x, rot_y, rot_z) {
     window.geometries[name+'_label'].setAttribute('position', p);
     window.geometries[name+'_label'].setAttribute('rotation', r);
 
+    var p = window.geometries[name+'_label'].getAttribute('position');
+    var r = window.geometries[name+'_label'].getAttribute('rotation');
+
+    p.x = pos_x;
+    p.y = -0.7; // TODO should be floor + 0.001 ?
+    p.z = pos_z;
+    
+    window.geometries[name+'_shadow'].setAttribute('position', p);
+
   }
   else {
     add_camera_named(name);
@@ -113,22 +123,32 @@ function move_camera_named(name, pos_x, pos_y, pos_z, rot_x, rot_y, rot_z) {
 
 function add_camera_named(name) {
   remove_camera_named(name);
-  if (window.my_name == name) {
-    return; // We never draw our own player model!
-  }
-  window.geometries[name] = document.createElement('a-sphere');
-  //window.geometries[name] = document.createElement('a-obj-model');
-  //window.geometries[name].setAttribute('src', '#player_model');
-  //window.geometries[name].setAttribute('mtl', '#player_model_mtl');
-  window.geometries[name].setAttribute('position', '0 0 0');
-  window.geometries[name].setAttribute('radius', '0.08');
-  window.geometries[name].setAttribute('color', '#fefefe');
-  //window.geometries[name].setAttribute('scale', '0.02 0.02 0.02');
-  window.geometries[name].setAttribute('scale', '1 1 1');
-  window.geometries[name].setAttribute('shadow', 'cast:true; receive:true');
-  window.geometries[name].setAttribute('name', name);
+  
+  var is_self = window.my_name == name;
 
-  document.getElementById('ar-scene').appendChild(window.geometries[name]);
+  if (!is_self) {
+    // Spheres are only for other people
+
+    window.geometries[name] = document.createElement('a-sphere');
+    //window.geometries[name] = document.createElement('a-obj-model');
+    //window.geometries[name].setAttribute('src', '#player_model');
+    //window.geometries[name].setAttribute('mtl', '#player_model_mtl');
+    window.geometries[name].setAttribute('position', '0 0 0');
+    window.geometries[name].setAttribute('radius', '0.08');
+    window.geometries[name].setAttribute('color', '#fefefe');
+    //window.geometries[name].setAttribute('scale', '0.02 0.02 0.02');
+    window.geometries[name].setAttribute('scale', '1 1 1');
+    window.geometries[name].setAttribute('shadow', 'cast:true; receive:true');
+    window.geometries[name].setAttribute('name', name);
+
+    document.getElementById('ar-scene').appendChild(window.geometries[name]);
+
+  }
+  else {
+    // is self, assign window.geometries[name] == <span>
+    window.geometries[name] = document.createElement('span');
+    document.getElementById('ar-scene').appendChild(window.geometries[name]);
+  }
 
   window.geometries[name+'_label'] = document.createElement('a-text');
   window.geometries[name+'_label'].setAttribute('position', '0 0.4 0');
@@ -142,6 +162,19 @@ function add_camera_named(name) {
   window.geometries[name+'_label'].setAttribute('value', '\u200B\u200C\u200D\uFEFF                                  '+name); // whitespace centers text over player models, non-printing unicode prevents string trimming
   
   document.getElementById('ar-scene').appendChild(window.geometries[name+'_label']);
+
+  window.geometries[name+'_shadow'] = document.createElement('a-circle');
+  window.geometries[name+'_shadow'].setAttribute('position', '0 0 0');
+  window.geometries[name+'_shadow'].setAttribute('rotation', '90 0 0');
+  window.geometries[name+'_shadow'].setAttribute('color', '#020202');
+  window.geometries[name+'_shadow'].setAttribute('side', 'double');
+  window.geometries[name+'_shadow'].setAttribute('scale', '0.3 0.3 0.3');
+  window.geometries[name+'_shadow'].setAttribute('shadow', 'cast:false; receive:true');
+  window.geometries[name+'_shadow'].setAttribute('anchor', 'center');
+  window.geometries[name+'_shadow'].setAttribute('baseline', 'center');
+  window.geometries[name+'_shadow'].setAttribute('name', name);
+  
+  document.getElementById('ar-scene').appendChild(window.geometries[name+'_shadow']);
 
 }
 

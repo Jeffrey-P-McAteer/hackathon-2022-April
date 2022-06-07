@@ -172,8 +172,9 @@ async def ws_req_handler(req):
         continue
 
       # Broadcast to everyone else
-      with CodeTimer('Broadcast to everyone else', unit='ms'):
-        await asyncio.gather(*[ maybe_await(lambda: w.send_str(msg.data)) for w in all_websockets if w != ws])
+      # with CodeTimer('Broadcast to everyone else', unit='ms'):
+      #   await asyncio.gather(*[ maybe_await(lambda: w.send_str(msg.data)) for w in all_websockets if w != ws])
+      await asyncio.gather(*[ maybe_await(lambda: w.send_str(msg.data)) for w in all_websockets if w != ws])
       
     elif msg.type == aiohttp.WSMsgType.ERROR:
       print('ws connection closed with exception {}'.format(ws.exception()))
@@ -194,7 +195,7 @@ async def heartbeat_task():
   while True:
     try:
       if len(all_websockets) > 0:
-        with CodeTimer('Pinging {} websockets'.format(len(all_websockets)), unit='ms'):
+        async def ping_n_ws():
           world_objs_str = json.dumps(world_objects)
           world_objs_plot_js = 'draw_geometries({})'.format(world_objs_str)
           
@@ -206,6 +207,11 @@ async def heartbeat_task():
             print('Removing {} dead websockets...'.format(len(ws_to_rm)))
           for w in ws_to_rm:
             all_websockets.remove(w)
+
+        # with CodeTimer('Pinging {} websockets'.format(len(all_websockets)), unit='ms'):
+        #   await ping_n_ws()
+        await ping_n_ws()
+
 
       # Also move object randomly
       for obj in world_objects:
